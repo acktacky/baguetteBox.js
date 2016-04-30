@@ -47,15 +47,12 @@ gulp.task('css', function() {
 
 gulp.task('css-min', function() {
     return gulp.src(src.css)
-        // Compile Sass
         .pipe(plugins.if(/.scss/, plugins.sass({ style: 'compressed', noCache: true }))) // jshint ignore:line
-        // parse CSS and add vendor-prefixed CSS properties
         .pipe(plugins.autoprefixer(autoprefixerBrowsers))
-        // Minify CSS
-        .pipe(plugins.cssmin())
-        // Concatenate all styles
+        .pipe(plugins.concat('baguetteBox.css'))
+        .pipe(gulp.dest(dist.css))
         .pipe(plugins.concat('baguetteBox.min.css'))
-        // Where to store the finalized CSS
+        .pipe(plugins.cssmin())
         .pipe(gulp.dest(dist.css));
 });
 
@@ -70,11 +67,10 @@ gulp.task('js', function () {
 
 gulp.task('js-min', function() {
     return gulp.src(src.js)
-        // Concatenate all JS files into one
+        .pipe(plugins.concat('baguetteBox.js'))
+        .pipe(gulp.dest(dist.js))
         .pipe(plugins.concat('baguetteBox.min.js'))
-        // Minify JS
         .pipe(plugins.uglify({ preserveComments: 'some' }))
-        // Where to store the finalized JS
         .pipe(gulp.dest(dist.js));
 });
 
